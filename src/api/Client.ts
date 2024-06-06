@@ -8,8 +8,9 @@ interface Response<T> {
     data: T;
 }
 
+
 const httpClient = axios.create({
-    baseURL: "http://localhost:5210",
+    baseURL: import.meta.env.VITE_API_URL,
     withCredentials: true
 })
 

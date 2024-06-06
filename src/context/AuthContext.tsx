@@ -62,10 +62,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return response.data;
   };
 
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const connectSignalR = async () => {
     try {
       const conn = new HubConnectionBuilder()
-        .withUrl("http://localhost:5210/connectchat")
+        .withUrl(`${apiUrl}/connectchat`)
         .configureLogging(LogLevel.Information)
         .build();
 
