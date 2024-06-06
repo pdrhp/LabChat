@@ -65,7 +65,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const connectSignalR = async () => {
     try {
       const conn = new HubConnectionBuilder()
-        .withUrl("http://localhost:5210/chat")
+        .withUrl("http://localhost:5210/connectchat")
         .configureLogging(LogLevel.Information)
         .build();
 
