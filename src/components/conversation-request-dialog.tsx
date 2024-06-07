@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "./ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
@@ -8,11 +9,12 @@ import { Label } from "./ui/label";
 
 type ConversationRequestDialogProps = {
     children: React.ReactNode;
+    sendRequest: (email: string) => void;
 }
 
 const emailSchema = z.string().email();
 
-const ConversationRequestDialog: React.FC<ConversationRequestDialogProps> = ({children}) => {
+const ConversationRequestDialog: React.FC<ConversationRequestDialogProps> = ({children, sendRequest}) => {
 
     const [email, setEmail] = useState<string>("");
     const [emailError, setEmailError] = useState<boolean>(false);
@@ -33,14 +35,12 @@ const ConversationRequestDialog: React.FC<ConversationRequestDialogProps> = ({ch
         validateEmail(e.target.value);
     }
 
-    const sendRequest = async () => {
-        if (emailError){
-            return;
-        }
+    const handleSendRequest = () => {
+      if(emailError) {
+        toast.error("E-mail inválido");
+      }
 
-        
-
-
+      sendRequest(email);
     }
 
   return (
@@ -64,7 +64,7 @@ const ConversationRequestDialog: React.FC<ConversationRequestDialogProps> = ({ch
           </div>
         </div>
         <DialogFooter>
-          <Button type="button" onClick={() => sendRequest()}>Solicitar</Button>
+          <Button type="button" onClick={() => handleSendRequest()}>Solicitar</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

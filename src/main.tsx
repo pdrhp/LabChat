@@ -1,4 +1,5 @@
 import ReactDOM from "react-dom/client";
+import { Toaster } from "sonner";
 import App from "./App.tsx";
 import "./index.css";
 import { ThemeProvider } from "./providers/theme-provider.tsx";
@@ -9,5 +10,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <App>
           <Routes />
         </App>
+        <Toaster richColors/>
     </ThemeProvider>
 );
