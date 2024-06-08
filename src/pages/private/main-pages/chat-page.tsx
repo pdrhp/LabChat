@@ -1,30 +1,29 @@
+import ChatRequest from "@/Interfaces/chat-request";
 import { httpPost } from "@/api/Client";
+import ChatContainer from "@/components/chat-container";
 import ConversationCard from "@/components/conversation-card";
 import ConversationRequestDialog from "@/components/conversation-request-dialog";
-import MessageInput from "@/components/message-input";
-import { useAuth } from "@/context/AuthContext";
-import ChatRequest from "@/models/ChatRequest";
+import { useChat } from "@/context/chat-context";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const ChatPage = () => {
-  const { connectSignalR, socketConnection } = useAuth();
-
-  const [sideBarItems, setSideBarItems] = useState<ChatRequest[]>([]);
+  const {connectSignalR, addRequest, sideBarConversationItems} = useChat();
+  const [actualConversation, setActualConversation] = useState<ChatRequest | undefined>();
 
   const sendRequest = async (email: string) => {
     const response = await httpPost<ChatRequest>("/chat/sendRequest", {
       email,
     });
+    
+    const request = response.data;
+    request.type = "request";
 
-    const data = response.data;
-
-    const chatRequestResponseInstance = new ChatRequest(data.accepted, data.rejected, data.requesterId, data.requester, data.requestedId, data.requested, data.timestamp);
-
+    console.log(request);
 
 
     if (response.flag) {
-      setSideBarItems([...sideBarItems, chatRequestResponseInstance]);
+      addRequest(request);
       toast.success("Solicitação enviada com sucesso");
     }
   };
@@ -42,8 +41,8 @@ const ChatPage = () => {
           </h1>
         </div>
         <div className="flex-1 w-full flex flex-col">
-          {sideBarItems.length > 0 ? (
-            sideBarItems.map((item, index) => (
+          {sideBarConversationItems.length > 0 ? (
+            sideBarConversationItems.map((item, index) => (
               <ConversationCard cardData={item} key={index} />
             ))
           ) : (
@@ -59,10 +58,12 @@ const ChatPage = () => {
         </div>
       </aside>
       <div className="border border-l-0 w-full rounded-r-lg bg-zinc-900 flex flex-col p-1 gap-2">
-        <div className="h-[78%]"></div>
-        <div className=" flex-1">
-          <MessageInput />
-        </div>
+        {actualConversation ? (
+        <ChatContainer/>
+
+        ): (
+          <div className="h-full"></div>
+        )}        
       </div>
     </main>
   );
