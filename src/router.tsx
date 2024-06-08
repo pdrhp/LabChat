@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import PrivateRoute from "./components/private-route";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from "./context/auth-context";
+import { ChatProvider } from "./context/chat-context";
 import LoginPage from "./pages/auth/login-page";
 import MainPage from "./pages/private/main-page";
 import ChatPage from "./pages/private/main-pages/chat-page";
@@ -39,7 +40,9 @@ const router = createBrowserRouter([
 const Routes: React.FC = () => {
   return (
     <AuthProvider>
-      <RouterProvider router={router} />
+      <ChatProvider>
+        <RouterProvider router={router} />
+      </ChatProvider>
     </AuthProvider>
   );
 };

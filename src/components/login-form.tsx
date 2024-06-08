@@ -1,4 +1,4 @@
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/context/auth-context";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -42,7 +42,7 @@ const LoginForm = () => {
     if (userSession) {
       navigate("/chat");
     }
-  }, [userSession])
+  }, [navigate, userSession])
 
 
   const onSubmit = async (data: z.infer<typeof loginFormSchema>) => {
