@@ -1,5 +1,5 @@
 import ChatRequest from "@/Interfaces/chat-request";
-import ChatItem from "@/types/ChatItem";
+import ChatItem from "@/types/chat-item";
 import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import { ReactNode, createContext, useContext, useState } from "react";
 
@@ -47,7 +47,7 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
             request.type = "request";
             setSideBarConversationItems([...sideBarConversationItems, request]);
           })
-    
+
           conn.on("ReceiveMessageFromServer", (admin: string, message: string) => {
             console.log(admin, message);
           });

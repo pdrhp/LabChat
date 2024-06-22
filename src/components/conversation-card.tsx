@@ -25,7 +25,7 @@ const ConversationCard: React.FC<ConversationCardProps> = ({ cardData }) => {
         );
       else
         return (
-          <RequestReceiverCard formattedDate={formattedDate} formattedTime={formattedTime} requesterName={cardData.requester.nome} requesterNameInitials={requesterNameInitials} imageUrl={imageUrl}/>
+          <RequestReceiverCard requestId={cardData.id} formattedDate={formattedDate} formattedTime={formattedTime} requesterName={cardData.requester.nome} requesterNameInitials={requesterNameInitials} imageUrl={imageUrl}/>
         );
     case "conversation":
       return (

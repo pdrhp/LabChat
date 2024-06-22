@@ -12,7 +12,7 @@ export const sendRequest = async (email: string) => {
 }
 
 
-export const manageRequest = async (requestId: number, accepted: boolean) => {
+export const manageRequest = async ({requestId, accepted} : {requestId: number, accepted: boolean}) => {
     try{
         const response = await httpPost<ChatRequest>(`manageRequest/${requestId}`, {requestClientResponse: accepted})
         return response;
