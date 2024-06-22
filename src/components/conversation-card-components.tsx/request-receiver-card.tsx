@@ -22,7 +22,7 @@ const RequestReceiverCard: React.FC<RequestReceiverCardProps> = ({
   requestId
 }) => {
 
-    const {mutate} = useMutation({
+    const {mutate: manage} = useMutation({
       mutationFn: manageRequest,
       onSuccess: () => {
         console.log("Request managed successfully");
@@ -45,10 +45,10 @@ const RequestReceiverCard: React.FC<RequestReceiverCardProps> = ({
         <h2>{requesterName}</h2>
         <div className="w-full h-[50%]">
           <div className="w-full h-full flex gap-3">
-            <Button onClick={() => manageRequest({requestId: requestId, accepted: true})} variant="outline" className="h-full w-[40%]">
+            <Button onClick={() => manage({requestId: requestId, accepted: true})} variant="outline" className="h-full w-[40%]">
               <Check className="h-4 w-4" color="green" />
             </Button>
-            <Button onClick={() => manageRequest({requestId: requestId, accepted: false})} variant="outline" className="h-full w-[40%]">
+            <Button onClick={() => manage({requestId: requestId, accepted: false})} variant="outline" className="h-full w-[40%]">
               <X className="h-4 w-4" color="red" />
             </Button>
           </div>

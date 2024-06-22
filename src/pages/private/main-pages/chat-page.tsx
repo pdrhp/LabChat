@@ -28,23 +28,6 @@ const ChatPage = () => {
     },
   })
 
-  // const sendRequest = async (email: string) => {
-  //   const response = await httpPost<ChatRequest>("/chat/sendRequest", {
-  //     email,
-  //   });
-
-  //   const request = response.data;
-  //   request.type = "request";
-
-  //   console.log(request);
-
-
-  //   if (response.flag) {
-  //     addRequest(request);
-  //     toast.success("Solicitação enviada com sucesso");
-  //   }
-  // };
-
   useEffect(() => {
     connectSignalR();
   }, []);
