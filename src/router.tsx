@@ -5,6 +5,7 @@ import { ChatProvider } from "./context/chat-context";
 import LoginPage from "./pages/auth/login-page";
 import MainPage from "./pages/private/main-page";
 import ChatPage from "./pages/private/main-pages/chat-page";
+import ProfilePage from "./pages/private/main-pages/profile-page";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "profile",
+        element: <ProfilePage/>,
+      }
     ],
   },
   {

@@ -1,13 +1,19 @@
 import { Laugh, MessageSquare, ShieldEllipsis, User } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from "./ui/tooltip";
 
 const SideBar = () => {
+
+  const navigate = useNavigate();
+
+
+
   return (
     <TooltipProvider>
       <aside className="h-full border-r w-[3%] flex flex-col items-center">
@@ -20,6 +26,7 @@ const SideBar = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
+                onClick={() => navigate("/chat")}
                 variant={"outline"}
                 className="rounded-lg"
                 size={"icon"}
@@ -54,6 +61,7 @@ const SideBar = () => {
                   variant={"outline"}
                   className="rounded-lg"
                   size={"icon"}
+                  onClick={() => navigate("/profile")}
                   aria-label="Chat"
                 >
                   <User className="size-5 fill-foreground" />

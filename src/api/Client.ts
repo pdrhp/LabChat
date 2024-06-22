@@ -34,5 +34,5 @@ const httpDelete = async <T>(url: string, config?: AxiosRequestConfig): Promise<
     return httpClient.delete<Response<T>>(url, config).then((response) => response.data);
 }
 
-export { httpDelete, httpGet, httpPost, httpPut };
+export { httpClient, httpDelete, httpGet, httpPost, httpPut };
 
