@@ -1,7 +1,7 @@
 import User from "./user";
 
 interface ChatRequest {
-    type: "request"
+    type: "request" | "accepted" | "rejected"
     id: number;
     accepted: boolean;
     rejected: boolean;
