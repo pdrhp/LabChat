@@ -2,16 +2,16 @@ import { useAuth } from "@/context/auth-context";
 import useFormattedData from "@/hooks/useFormattedData";
 import ChatItem from "@/types/chat-item";
 import { useState } from "react";
+import ChatCard from "./conversation-card-components.tsx/chat-card";
 import RequestReceiverCard from "./conversation-card-components.tsx/request-receiver-card";
 import RequestSenderCard from "./conversation-card-components.tsx/request-sender-card";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 type ConversationCardProps = {
   cardData: ChatItem;
 };
 
 const ConversationCard: React.FC<ConversationCardProps> = ({ cardData }) => {
-  const [imageUrl, setImageUrl] = useState();
+  const [imageUrl, setImageUrl] = useState('');
   const { userSession } = useAuth();
 
   const { formattedDate, formattedTime, requestedNameInitials, requesterNameInitials } =
@@ -27,27 +27,15 @@ const ConversationCard: React.FC<ConversationCardProps> = ({ cardData }) => {
         return (
           <RequestReceiverCard requestId={cardData.id} formattedDate={formattedDate} formattedTime={formattedTime} requesterName={cardData.requester.nome} requesterNameInitials={requesterNameInitials} imageUrl={imageUrl}/>
         );
-    case "conversation":
-      return (
-        <div className="p-1 w-full h-[10%] border grid grid-cols-[auto,0.8fr,auto] gap-2 cursor-pointer">
-          <div className="flex items-center">
-            <Avatar>
-              <AvatarImage src={imageUrl} />
-              <AvatarFallback>{requestedNameInitials}</AvatarFallback>
-            </Avatar>
-          </div>
-          <div className="w-[100%] flex flex-col justify-center">
-            <h2>{cardData.requested.nome}</h2>
-            <div className="w-full h-[30%]">
-              <p className="h-full w-full max-w-[14rem]  truncate">"TESTETE"</p>
-            </div>
-          </div>
-          <div className="flex flex-col justify-center items-center">
-            <p className="text-xs">teste</p>
-            <p className="text-xs">teste</p>
-          </div>
-        </div>
-      );
+    case "accepted":
+      if(cardData.requester.id === userSession?.id)
+        return (
+          <ChatCard imageUrl={imageUrl} requestedNameInitials={requestedNameInitials} name={cardData.requested.nome}/>
+        );
+      else
+        return (
+          <ChatCard imageUrl={imageUrl} requestedNameInitials={requesterNameInitials} name={cardData.requester.nome}/>
+        );
   }
 };
 
