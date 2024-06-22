@@ -32,7 +32,7 @@ const ChatPage = () => {
 
   return (
     <main className="h-full w-full flex p-2">
-      <aside className="w-[25%] h-full border rounded-l-lg flex flex-col">
+      <aside className="w-[50%] md:w-[30%] lg:w-[26%] xl:w-[22%] 2xl:w-[20%] h-full border rounded-l-lg flex flex-col">
         <div className="w-full h-[10%] border-b flex justify-center items-center">
           <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl">
             Chat
