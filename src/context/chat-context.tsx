@@ -37,7 +37,14 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     
           setSocketConnection(conn);
 
-  
+          // Listener pra receber os requests e conversas ativas ao se conectar
+          conn.on("ReceiveActiveConversations", (conversations: ChatItem[] ) => {
+            conversations.forEach(conversation => {
+              conversation.accepted == true && conversation.rejected == false ? conversation.type = "accepted" : conversation.type = "rejected";
+              setSideBarConversationItems([...sideBarConversationItems, conversation]);
+            })
+          });
+
           conn.on("ReceiveIndividualMessage", (sender: string, message: string) => {
             console.log(sender, message);
           });
@@ -47,13 +54,11 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
             setSideBarConversationItems([...sideBarConversationItems, request]);
           })
 
-          conn.on("ReceiveActiveConversations", (conversations: ChatItem[] ) => {
-            conversations.forEach(conversation => {
-              conversation.accepted == true ? conversation.type = "accepted" : conversation.type = "request";
-
-              setSideBarConversationItems([...sideBarConversationItems, conversation]);
-            })
-          });
+          conn.on("ReceiveRequestResponse", (request: ChatItem, accepted: boolean) => {
+            accepted ? request.type = "accepted" : request.type = "rejected";
+            const ListWithRemovedPastItem = sideBarConversationItems.filter(item => item.id !== request.id);
+            setSideBarConversationItems([...ListWithRemovedPastItem, request]);
+          })
 
           conn.on("ReceiveMessageFromServer", (admin: string, message: string) => {
             console.log(admin, message);

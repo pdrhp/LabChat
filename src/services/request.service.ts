@@ -14,7 +14,7 @@ export const sendRequest = async (email: string) => {
 
 export const manageRequest = async ({requestId, accepted} : {requestId: number, accepted: boolean}) => {
     try{
-        const response = await httpPost<ChatRequest>(`manageRequest/${requestId}`, {requestClientResponse: accepted})
+        const response = await httpPost<ChatRequest>(`/chat/manageRequest/${requestId}`, {requestClientResponse: accepted})
         return response;
     }catch(error){
         console.error(error)
