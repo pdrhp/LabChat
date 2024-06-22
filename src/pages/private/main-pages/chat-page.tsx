@@ -1,16 +1,14 @@
-import ChatRequest from "@/Interfaces/chat-request";
 import ChatContainer from "@/components/chat-container";
 import ConversationCard from "@/components/conversation-card";
 import ConversationRequestDialog from "@/components/conversation-request-dialog";
 import { useChat } from "@/context/chat-context";
 import { sendRequest } from "@/services/request.service";
 import { useMutation } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { toast } from "sonner";
 
 const ChatPage = () => {
-  const {connectSignalR, addRequest, sideBarConversationItems} = useChat();
-  const [actualConversation, setActualConversation] = useState<ChatRequest | undefined>();
+  const {connectSignalR, addRequest, sideBarConversationItems, actualConversation} = useChat();
 
   const {mutate: sendRequestMutate} = useMutation({
     mutationFn: sendRequest,
@@ -60,7 +58,6 @@ const ChatPage = () => {
       <div className="border border-l-0 w-full rounded-r-lg bg-zinc-900 flex flex-col p-1 gap-2">
         {actualConversation ? (
         <ChatContainer/>
-
         ): (
           <div className="h-full"></div>
         )}        

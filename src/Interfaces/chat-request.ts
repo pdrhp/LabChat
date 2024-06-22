@@ -1,3 +1,4 @@
+import ChatMessage from "./chat-message";
 import User from "./user";
 
 interface ChatRequest {
@@ -10,6 +11,7 @@ interface ChatRequest {
     requestedId: string;
     requested: User;
     timestamp: string;
+    messages: ChatMessage[];
 }
 
 export default ChatRequest;

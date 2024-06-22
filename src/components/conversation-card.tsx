@@ -14,7 +14,8 @@ const ConversationCard: React.FC<ConversationCardProps> = ({ cardData }) => {
   const [imageUrl, setImageUrl] = useState('');
   const { userSession } = useAuth();
 
-  const { formattedDate, formattedTime, requestedNameInitials, requesterNameInitials } =
+
+  const { formattedDate, formattedTime, requestedNameInitials, requesterNameInitials, lastMessage } =
     useFormattedData(cardData);
 
   switch (cardData.type) {
@@ -30,11 +31,11 @@ const ConversationCard: React.FC<ConversationCardProps> = ({ cardData }) => {
     case "accepted":
       if(cardData.requester.id === userSession?.id)
         return (
-          <ChatCard imageUrl={imageUrl} requestedNameInitials={requestedNameInitials} name={cardData.requested.nome}/>
+          <ChatCard lastMessage={lastMessage} conversationId={cardData.id} imageUrl={imageUrl} requestedNameInitials={requestedNameInitials} name={cardData.requested.nome}/>
         );
       else
         return (
-          <ChatCard imageUrl={imageUrl} requestedNameInitials={requesterNameInitials} name={cardData.requester.nome}/>
+          <ChatCard lastMessage={lastMessage} conversationId={cardData.id} imageUrl={imageUrl} requestedNameInitials={requesterNameInitials} name={cardData.requester.nome}/>
         );
   }
 };
