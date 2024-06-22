@@ -1,9 +1,10 @@
 import ChatRequest from "@/Interfaces/chat-request";
-import { httpPost } from "@/api/Client";
 import ChatContainer from "@/components/chat-container";
 import ConversationCard from "@/components/conversation-card";
 import ConversationRequestDialog from "@/components/conversation-request-dialog";
 import { useChat } from "@/context/chat-context";
+import { sendRequest } from "@/services/request.service";
+import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -11,22 +12,38 @@ const ChatPage = () => {
   const {connectSignalR, addRequest, sideBarConversationItems} = useChat();
   const [actualConversation, setActualConversation] = useState<ChatRequest | undefined>();
 
-  const sendRequest = async (email: string) => {
-    const response = await httpPost<ChatRequest>("/chat/sendRequest", {
-      email,
-    });
-    
-    const request = response.data;
-    request.type = "request";
+  const {mutate: sendRequestMutate} = useMutation({
+    mutationFn: sendRequest,
+    onSuccess: (requestResponse) => {
+      if (requestResponse) {
+        const request = requestResponse.data;
+        request.type = "request";
+        addRequest(request);
 
-    console.log(request);
+        toast.success("Solicitação enviada com sucesso");
+      }
+    },
+    onError: () => {
+      toast.error("Erro ao enviar solicitação");
+    },
+  })
+
+  // const sendRequest = async (email: string) => {
+  //   const response = await httpPost<ChatRequest>("/chat/sendRequest", {
+  //     email,
+  //   });
+
+  //   const request = response.data;
+  //   request.type = "request";
+
+  //   console.log(request);
 
 
-    if (response.flag) {
-      addRequest(request);
-      toast.success("Solicitação enviada com sucesso");
-    }
-  };
+  //   if (response.flag) {
+  //     addRequest(request);
+  //     toast.success("Solicitação enviada com sucesso");
+  //   }
+  // };
 
   useEffect(() => {
     connectSignalR();
@@ -48,7 +65,7 @@ const ChatPage = () => {
           ) : (
             <div className="h-[15%] w-full flex flex-col justify-center items-center">
               <p>Você não nenhuma conversa :(</p>
-              <ConversationRequestDialog sendRequest={sendRequest}>
+              <ConversationRequestDialog sendRequest={sendRequestMutate}>
                 <p className="font-bold cursor-pointer hover:text-blue-200">
                   + Adicionar conversa
                 </p>
