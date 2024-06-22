@@ -37,8 +37,7 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     
           setSocketConnection(conn);
 
-    
-    
+  
           conn.on("ReceiveIndividualMessage", (sender: string, message: string) => {
             console.log(sender, message);
           });
@@ -48,12 +47,19 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
             setSideBarConversationItems([...sideBarConversationItems, request]);
           })
 
+          conn.on("ReceiveActiveConversations", (conversations: ChatItem[] ) => {
+            conversations.forEach(conversation => {
+              conversation.accepted == true ? conversation.type = "accepted" : conversation.type = "request";
+
+              setSideBarConversationItems([...sideBarConversationItems, conversation]);
+            })
+          });
+
           conn.on("ReceiveMessageFromServer", (admin: string, message: string) => {
             console.log(admin, message);
           });
 
-          await conn.start();
-    
+          await conn.start();    
         } catch (error) {
           console.log(error);
         }
