@@ -1,5 +1,6 @@
 import { UserSession } from "@/Interfaces/user-session";
 import { httpGet, httpPost } from "@/api/Client";
+import { getProfilePictureById } from "@/services/user.service";
 import {
   ReactNode,
   createContext,
@@ -15,6 +16,7 @@ interface AuthContextType {
     password: string;
   }) => Promise<UserSession>;
   logout: () => Promise<UserSession>;
+  setProfilePicture: (profilePicture: string) => void;
 }
 
 interface AuthProviderProps {
@@ -30,9 +32,34 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     httpGet<UserSession>("auth/verifySession").then((response) => {
       if (response.flag) {
         setUserSession(response.data);
+        getProfilePictureById(response.data.id).then((response) => {
+          setUserSession((prev) => {
+            if (prev) {
+              return {
+                ...prev,
+                profilePicture: response,
+              };
+            }
+            return prev;
+          });
+        })
       }
     });
+
   }, []);
+
+
+  const setProfilePicture = (profilePicture: string) => {
+    setUserSession((prev) => {
+      if (prev) {
+        return {
+          ...prev,
+          profilePicture: profilePicture,
+        };
+      }
+      return prev;
+    });
+  }
 
   const login = async (userData: { email: string; password: string }) => {
     const response = await httpPost<UserSession>("/auth/signin", userData);
@@ -55,7 +82,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ userSession, login, logout }}>
+    <AuthContext.Provider value={{ userSession, login, logout, setProfilePicture }}>
       {children}
     </AuthContext.Provider>
   );
