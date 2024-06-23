@@ -47,7 +47,7 @@ const useFormattedData = (cardData: ChatItem): UseFormattedDataReturn => {
       .padStart(2, "0")}`;
     setFormattedTime(timeStr);
 
-    const lastMessage = cardData.messages.length > 0 ? cardData.messages[cardData.messages.length - 1] : undefined;
+    const lastMessage = cardData.messages && cardData.messages.length > 0 ? cardData.messages[cardData.messages.length - 1] : undefined;
     setLastMessage(lastMessage);
   }, [cardData]);
 
