@@ -1,7 +1,6 @@
 import { useAuth } from "@/context/auth-context";
 import useFormattedData from "@/hooks/useFormattedData";
 import ChatItem from "@/types/chat-item";
-import { useState } from "react";
 import ChatCard from "./conversation-card-components.tsx/chat-card";
 import RequestReceiverCard from "./conversation-card-components.tsx/request-receiver-card";
 import RequestSenderCard from "./conversation-card-components.tsx/request-sender-card";
@@ -11,7 +10,6 @@ type ConversationCardProps = {
 };
 
 const ConversationCard: React.FC<ConversationCardProps> = ({ cardData }) => {
-  const [imageUrl, setImageUrl] = useState('');
   const { userSession } = useAuth();
 
 
@@ -22,20 +20,20 @@ const ConversationCard: React.FC<ConversationCardProps> = ({ cardData }) => {
     case "request":
       if (cardData.requester.id === userSession?.id)
         return (
-          <RequestSenderCard formattedDate={formattedDate} formattedTime={formattedTime} requestedName={cardData.requested.nome} requestedNameInitials={requestedNameInitials} imageUrl={imageUrl}/>
+          <RequestSenderCard requestedId={cardData.requested.id} formattedDate={formattedDate} formattedTime={formattedTime} requestedName={cardData.requested.nome} requestedNameInitials={requestedNameInitials}/>
         );
       else
         return (
-          <RequestReceiverCard requestId={cardData.id} formattedDate={formattedDate} formattedTime={formattedTime} requesterName={cardData.requester.nome} requesterNameInitials={requesterNameInitials} imageUrl={imageUrl}/>
+          <RequestReceiverCard requesterId={cardData.requester.id} requestId={cardData.id} formattedDate={formattedDate} formattedTime={formattedTime} requesterName={cardData.requester.nome} requesterNameInitials={requesterNameInitials}/>
         );
     case "accepted":
       if(cardData.requester.id === userSession?.id)
         return (
-          <ChatCard lastMessage={lastMessage} conversationId={cardData.id} imageUrl={imageUrl} requestedNameInitials={requestedNameInitials} name={cardData.requested.nome}/>
+          <ChatCard requestedId={cardData.requested.id} lastMessage={lastMessage} conversationId={cardData.id}  requestedNameInitials={requestedNameInitials} name={cardData.requested.nome}/>
         );
       else
         return (
-          <ChatCard lastMessage={lastMessage} conversationId={cardData.id} imageUrl={imageUrl} requestedNameInitials={requesterNameInitials} name={cardData.requester.nome}/>
+          <ChatCard requestedId={cardData.requester.id} lastMessage={lastMessage} conversationId={cardData.id}  requestedNameInitials={requesterNameInitials} name={cardData.requester.nome}/>
         );
   }
 };

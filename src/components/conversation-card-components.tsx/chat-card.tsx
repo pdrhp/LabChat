@@ -1,23 +1,25 @@
 import ChatMessage from "@/Interfaces/chat-message";
 import { useChat } from "@/context/chat-context";
+import useQueryImage from "@/hooks/useQueryImage";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 type ChatCardProps = {
-  imageUrl: string;
   requestedNameInitials: string;
   name: string;
   conversationId: number;
   lastMessage?: ChatMessage;
+  requestedId: string;
 };
 
 const ChatCard: React.FC<ChatCardProps> = ({
-  imageUrl,
   requestedNameInitials,
   name,
   lastMessage,
-  conversationId
+  conversationId,
+  requestedId
 }) => {
 
+  const {data} = useQueryImage(requestedId)
   const {handleActualConversationChange, actualConversation} = useChat();
 
   const lastMessageDate = lastMessage ? new Date(lastMessage.timestamp).toLocaleDateString() : "";
@@ -27,7 +29,7 @@ const ChatCard: React.FC<ChatCardProps> = ({
     <div onClick={() => handleActualConversationChange(conversationId)} className={`p-1 w-full h-[10%] border grid grid-cols-[auto,0.95fr,auto] gap-2 cursor-pointer ${actualConversation && 'bg-neutral-900 border-0'}`}>
       <div className="flex items-center">
         <Avatar>
-          <AvatarImage src={imageUrl} />
+          <AvatarImage src={data} />
           <AvatarFallback>{requestedNameInitials}</AvatarFallback>
         </Avatar>
       </div>

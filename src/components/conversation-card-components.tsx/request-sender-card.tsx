@@ -1,20 +1,24 @@
+import useQueryImage from "@/hooks/useQueryImage";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 
 type RequestSenderCardProps = {
-    imageUrl: string | undefined;
     requestedName: string;
     requestedNameInitials: string;
     formattedDate: string;
     formattedTime: string;
+    requestedId: string;
 }
 
-const RequestSenderCard:React.FC<RequestSenderCardProps>  = ({imageUrl, requestedName, requestedNameInitials, formattedDate, formattedTime}) => {
+const RequestSenderCard:React.FC<RequestSenderCardProps>  = ({requestedName, requestedNameInitials, formattedDate, formattedTime, requestedId}) => {
+
+  const {data} = useQueryImage(requestedId)
+
   return (
     <div className="p-1 w-full h-[10%] border grid grid-cols-[auto,0.8fr,auto] gap-2 cursor-pointer">
       <div className="flex items-center">
         <Avatar>
-          <AvatarImage src={imageUrl} />
+          <AvatarImage src={data} />
           <AvatarFallback>{requestedNameInitials}</AvatarFallback>
         </Avatar>
       </div>

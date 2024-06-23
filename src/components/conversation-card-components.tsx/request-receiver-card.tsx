@@ -1,3 +1,4 @@
+import useQueryImage from "@/hooks/useQueryImage";
 import { manageRequest } from "@/services/request.service";
 import { useMutation } from "@tanstack/react-query";
 import { Check, X } from "lucide-react";
@@ -5,22 +6,25 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 
 type RequestReceiverCardProps = {
-  imageUrl: string | undefined;
   requesterName: string;
   requesterNameInitials: string;
   formattedDate: string;
   formattedTime: string;
   requestId: number;
+  requesterId: string;
 };
 
 const RequestReceiverCard: React.FC<RequestReceiverCardProps> = ({
-  imageUrl,
   requesterName,
   requesterNameInitials,
   formattedDate,
   formattedTime,
-  requestId
+  requestId,
+  requesterId,
 }) => {
+
+    const {data} = useQueryImage(requesterId);
+        
 
     const {mutate: manage} = useMutation({
       mutationFn: manageRequest,
@@ -37,7 +41,7 @@ const RequestReceiverCard: React.FC<RequestReceiverCardProps> = ({
     <div className="p-1 w-full h-[10%] border grid grid-cols-[auto,0.8fr,auto] gap-2 cursor-pointer">
       <div className="flex items-center">
         <Avatar>
-          <AvatarImage src={imageUrl} />
+          <AvatarImage src={data} />
           <AvatarFallback>{requesterNameInitials}</AvatarFallback>
         </Avatar>
       </div>
