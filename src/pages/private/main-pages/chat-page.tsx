@@ -18,16 +18,20 @@ const ChatPage = () => {
         request.type = "request";
         addRequest(request);
 
-        toast.success("Solicitação enviada com sucesso");
+        toast.success("Solicitação enviada com sucesso", {
+          position: "top-right"
+        });
       }
     },
     onError: () => {
-      toast.error("Erro ao enviar solicitação");
+      toast.error("Erro ao enviar solicitação", {
+        position: "top-right"
+      });
     },
   })
 
   useEffect(() => {
-    connectSignalR();
+    connectSignalR();    
   }, []);
 
   return (

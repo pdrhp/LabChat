@@ -6,6 +6,8 @@ import {
   LogLevel,
 } from "@microsoft/signalr";
 import { ReactNode, createContext, useContext, useState } from "react";
+import { toast } from "sonner";
+import { useAuth } from "./auth-context";
 
 interface ChatContextType {
   socketConnection: HubConnection | undefined;
@@ -33,14 +35,14 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     null
   );
 
+  const { userSession } = useAuth();
+
   const apiUrl = import.meta.env.VITE_API_URL;
 
   const connectSignalR = async () => {
-
     if (socketConnection) {
       return;
     }
-
 
     try {
       const conn = new HubConnectionBuilder()
@@ -71,6 +73,11 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
       conn.on("ReceiveRequest", (request: ChatRequest) => {
         request.type = "request";
         setSideBarConversationItems([...sideBarConversationItems, request]);
+        toast.success("Nova solicitação de conversa recebida", {
+          description: `De ${request.requester.nome}`,
+          duration: 5000,
+          position: "top-right"
+        });
       });
 
       conn.on(
@@ -81,6 +88,20 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
             (item) => item.id !== request.id
           );
           setSideBarConversationItems([...ListWithRemovedPastItem, request]);
+          if (accepted && request.requester.id === userSession?.id) {
+            toast.success("Solicitação aceita", {
+              description: `De ${request.requested.nome}`,
+              duration: 5000,
+              position: "top-right"
+            });
+          }
+          if (!accepted && request.requester.id === userSession?.id) {
+            toast.error("Solicitação recusada", {
+              description: `De ${request.requested.nome}`,
+              duration: 5000,
+              position: "top-right"
+            });
+          }
         }
       );
 
@@ -102,7 +123,11 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     const conversation = sideBarConversationItems.find(
       (item) => item.id == conversationId
     );
-    if (conversation && conversation.type == "accepted" && conversation.id != actualConversation?.id) {
+    if (
+      conversation &&
+      conversation.type == "accepted" &&
+      conversation.id != actualConversation?.id
+    ) {
       setActualConversation(conversation);
     }
   };

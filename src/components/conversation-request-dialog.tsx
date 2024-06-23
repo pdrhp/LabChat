@@ -1,3 +1,4 @@
+import { useAuth } from "@/context/auth-context";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -16,6 +17,9 @@ const emailSchema = z.string().email();
 
 const ConversationRequestDialog: React.FC<ConversationRequestDialogProps> = ({children, sendRequest}) => {
 
+
+
+    const {userSession} = useAuth();
     const [email, setEmail] = useState<string>("");
     const [emailError, setEmailError] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
@@ -38,6 +42,11 @@ const ConversationRequestDialog: React.FC<ConversationRequestDialogProps> = ({ch
     const handleSendRequest = () => {
       if(emailError) {
         toast.error("E-mail inválido");
+      }
+
+      if(email === userSession?.email){
+        toast.error("Você não pode iniciar uma conversa com você mesmo");
+        return;
       }
 
       sendRequest(email);
