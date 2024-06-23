@@ -36,6 +36,12 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
   const apiUrl = import.meta.env.VITE_API_URL;
 
   const connectSignalR = async () => {
+
+    if (socketConnection) {
+      return;
+    }
+
+
     try {
       const conn = new HubConnectionBuilder()
         .withUrl(`${apiUrl}/connectchat`)
@@ -46,10 +52,11 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
 
       // Listener pra receber os requests e conversas ativas ao se conectar
       conn.on("ReceiveActiveConversations", (conversations: ChatItem[]) => {
+        console.log(conversations);
         conversations.forEach((conversation) => {
           conversation.accepted == true && conversation.rejected == false
             ? (conversation.type = "accepted")
-            : (conversation.type = "rejected");
+            : (conversation.type = "request");
           setSideBarConversationItems([
             ...sideBarConversationItems,
             conversation,
