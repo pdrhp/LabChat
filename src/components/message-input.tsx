@@ -4,13 +4,34 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useState } from "react";
 
-const MessageInput = () => {
+type MessageInputProps = {
+  sendMessage: (message: string) => void;
+}
+
+const MessageInput: React.FC<MessageInputProps> = ({sendMessage}) => {
+  const [messageInput, setMessage] = useState("");
+  
+  const handleSendMessage = (message: string) => {
+    sendMessage(message);
+    setMessage("");
+  }
+  
+  const handlePressEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (messageInput.trim() !== "") {
+        handleSendMessage(messageInput);
+      }
+    }
+  }
+
   return (
     <TooltipProvider>
       <div className="h-full overflow-hidden rounded-lg flex flex-col border bg-background focus-within:ring-1 focus-within:ring-ring">
@@ -19,6 +40,9 @@ const MessageInput = () => {
         </Label>
         <Textarea
           id="message"
+          value={messageInput}
+          onKeyDown={handlePressEnter}
+          onChange={(e) => setMessage(e.target.value)}
           placeholder="Escreva sua mensagem aqui..."
           className="h-[65%] resize-none border-0 p-3 shadow-none focus-visible:ring-0"
         />
