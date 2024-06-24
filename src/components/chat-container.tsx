@@ -1,20 +1,25 @@
-import ChatRequest from "@/Interfaces/chat-request"
 import { useAuth } from "@/context/auth-context"
 import { useChat } from "@/context/chat-context"
+import { toast } from "sonner"
 import MessageInput from "./message-input"
 
-type ChatContainerProps = {
-  actualConversation: ChatRequest
-}
 
 
-const ChatContainer: React.FC<ChatContainerProps> = ({actualConversation}) => {
 
-  const {sendMessageToUser} = useChat();
+const ChatContainer = () => {
+
+  const {sendMessageToUser, actualConversation} = useChat();
   const {userSession} = useAuth();
-  const requestedId = actualConversation.requested.id === userSession!.id ? actualConversation.requester.id : actualConversation.requested.id;
+
+  const requestedId = actualConversation?.requested.id === userSession!.id ? actualConversation.requester.id : actualConversation?.requested.id;
 
   const handleSendMessage = (message: string) => {
+
+    if(!actualConversation || !requestedId){
+      toast.error('Erro ao enviar mensagem')
+      return;
+    }
+
     const sendMessageDto = {
       senderId: userSession!.id,
       receiverId: requestedId,

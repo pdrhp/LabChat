@@ -25,7 +25,6 @@ const RequestReceiverCard: React.FC<RequestReceiverCardProps> = ({
 
     const {data} = useQueryImage(requesterId);
         
-
     const {mutate: manage} = useMutation({
       mutationFn: manageRequest,
       onSuccess: () => {

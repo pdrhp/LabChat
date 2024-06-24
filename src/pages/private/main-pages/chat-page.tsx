@@ -49,7 +49,7 @@ const ChatPage = () => {
             ))
           ) : (
             <div className="h-[15%] w-full flex flex-col justify-center items-center">
-              <p>Você não nenhuma conversa :(</p>
+              <p>Você não tem nenhuma conversa :(</p>
               <ConversationRequestDialog sendRequest={sendRequestMutate}>
                 <p className="font-bold cursor-pointer hover:text-blue-200">
                   + Adicionar conversa
