@@ -34,7 +34,7 @@ const MessageInput: React.FC<MessageInputProps> = ({sendMessage}) => {
 
   return (
     <TooltipProvider>
-      <div className="h-full overflow-hidden rounded-lg flex flex-col border bg-background focus-within:ring-1 focus-within:ring-ring">
+      <div className="h-full overflow-hidden rounded-lg flex flex-col border bg-background">
         <Label htmlFor="message" className="sr-only">
           Message
         </Label>
