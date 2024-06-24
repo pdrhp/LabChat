@@ -14,7 +14,7 @@ const ChatContainer = () => {
   const lastMessage = actualConversation?.messages[actualConversation?.messages.length - 1];
 
   useEffect(() => {
-    lastMessageEndRef.current!.scrollIntoView({ behavior: "smooth" });
+    lastMessageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [lastMessage]);
 
   const handleSendMessage = (message: string) => {
