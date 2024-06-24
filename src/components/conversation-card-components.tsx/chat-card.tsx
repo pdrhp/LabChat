@@ -9,6 +9,7 @@ type ChatCardProps = {
   conversationId: number;
   lastMessage?: ChatMessage;
   requestedId: string;
+  requestId: number;
 };
 
 const ChatCard: React.FC<ChatCardProps> = ({
@@ -16,7 +17,8 @@ const ChatCard: React.FC<ChatCardProps> = ({
   name,
   lastMessage,
   conversationId,
-  requestedId
+  requestedId,
+  requestId
 }) => {
 
   const {data} = useQueryImage(requestedId)
@@ -26,7 +28,7 @@ const ChatCard: React.FC<ChatCardProps> = ({
   const lastMessageTime = lastMessage ? new Date(lastMessage.timestamp).toLocaleTimeString() : "";
 
   return (
-    <div onClick={() => handleActualConversationChange(conversationId)} className={`p-1 w-full h-[10%] border grid grid-cols-[auto,0.95fr,auto] gap-2 cursor-pointer ${actualConversation && 'bg-neutral-900 border-0'}`}>
+    <div onClick={() => handleActualConversationChange(conversationId)} className={`p-1 w-full h-[10%] border grid grid-cols-[auto,0.95fr,auto] gap-2 cursor-pointer ${actualConversation?.id === requestId && 'bg-neutral-900 border-0'}`}>
       <div className="flex items-center">
         <Avatar>
           <AvatarImage src={data} />

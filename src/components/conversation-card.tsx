@@ -12,9 +12,10 @@ type ConversationCardProps = {
 const ConversationCard: React.FC<ConversationCardProps> = ({ cardData }) => {
   const { userSession } = useAuth();
 
-
-  const { formattedDate, formattedTime, requestedNameInitials, requesterNameInitials, lastMessage } =
+  const { formattedDate, formattedTime, requestedNameInitials, requesterNameInitials } =
     useFormattedData(cardData);
+
+  const lastMessage = cardData.messages ? cardData.messages[cardData.messages.length - 1] : undefined;
 
   switch (cardData.type) {
     case "request":
@@ -29,11 +30,11 @@ const ConversationCard: React.FC<ConversationCardProps> = ({ cardData }) => {
     case "accepted":
       if(cardData.requester.id === userSession?.id)
         return (
-          <ChatCard requestedId={cardData.requested.id} lastMessage={lastMessage} conversationId={cardData.id}  requestedNameInitials={requestedNameInitials} name={cardData.requested.nome}/>
+          <ChatCard lastMessage={lastMessage} requestId={cardData.id} requestedId={cardData.requested.id} conversationId={cardData.id}  requestedNameInitials={requestedNameInitials} name={cardData.requested.nome}/>
         );
       else
         return (
-          <ChatCard requestedId={cardData.requester.id} lastMessage={lastMessage} conversationId={cardData.id}  requestedNameInitials={requesterNameInitials} name={cardData.requester.nome}/>
+          <ChatCard lastMessage={lastMessage} requestId={cardData.id} requestedId={cardData.requester.id} conversationId={cardData.id}  requestedNameInitials={requesterNameInitials} name={cardData.requester.nome}/>
         );
   }
 };

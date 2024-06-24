@@ -1,4 +1,3 @@
-import ChatMessage from "@/Interfaces/chat-message";
 import ChatItem from "@/types/chat-item";
 import { useEffect, useState } from "react";
 
@@ -7,7 +6,6 @@ type UseFormattedDataReturn = {
   requestedNameInitials: string;
   formattedDate: string;
   formattedTime: string;
-  lastMessage?: ChatMessage;
 };
 
 const useFormattedData = (cardData: ChatItem): UseFormattedDataReturn => {
@@ -15,7 +13,6 @@ const useFormattedData = (cardData: ChatItem): UseFormattedDataReturn => {
   const [requestedNameInitials, setRequestedNameInitials] = useState<string>("");
   const [formattedDate, setFormattedDate] = useState<string>("");
   const [formattedTime, setFormattedTime] = useState<string>("");
-  const [lastMessage, setLastMessage] = useState<ChatMessage | undefined>();
 
   useEffect(() => {
     const requestedInitials = cardData.requested.nome
@@ -46,12 +43,9 @@ const useFormattedData = (cardData: ChatItem): UseFormattedDataReturn => {
       .toString()
       .padStart(2, "0")}`;
     setFormattedTime(timeStr);
-
-    const lastMessage = cardData.messages && cardData.messages.length > 0 ? cardData.messages[cardData.messages.length - 1] : undefined;
-    setLastMessage(lastMessage);
   }, [cardData]);
 
-    return { requesterNameInitials ,requestedNameInitials, formattedDate, formattedTime, lastMessage};
+    return { requesterNameInitials ,requestedNameInitials, formattedDate, formattedTime};
 };
 
 export default useFormattedData;
