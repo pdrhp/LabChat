@@ -1,3 +1,4 @@
+import ChatMessage from "@/Interfaces/chat-message";
 import ChatRequest from "@/Interfaces/chat-request";
 import ChatItem from "@/types/chat-item";
 import {
@@ -5,7 +6,7 @@ import {
   HubConnectionBuilder,
   LogLevel,
 } from "@microsoft/signalr";
-import { ReactNode, createContext, useContext, useState } from "react";
+import { ReactNode, createContext, useContext, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useAuth } from "./auth-context";
 
@@ -16,6 +17,7 @@ interface ChatContextType {
   addRequest: (request: ChatRequest) => void;
   actualConversation: ChatItem | null;
   handleActualConversationChange: (conversationId: number) => void;
+  sendMessageToUser: (sendMessageDto: { receiverId: string, senderId: string, message: string, requestId: number}) => void;
 }
 
 interface ChatProviderProps {
@@ -28,9 +30,20 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
   const [socketConnection, setSocketConnection] = useState<
     HubConnection | undefined
   >();
+
   const [sideBarConversationItems, setSideBarConversationItems] = useState<
     ChatItem[]
   >([]);
+
+  const sideBarConversationItemsRef = useRef<ChatItem[]>([]);
+  
+
+  useEffect(() => {
+    sideBarConversationItemsRef.current = sideBarConversationItems;
+  }, [sideBarConversationItems])
+
+
+
   const [actualConversation, setActualConversation] = useState<ChatItem | null>(
     null
   );
@@ -54,25 +67,29 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
 
       // Listener pra receber os requests e conversas ativas ao se conectar
       conn.on("ReceiveActiveConversations", (conversations: ChatItem[]) => {
-        console.log(conversations);
         conversations.forEach((conversation) => {
           conversation.accepted == true && conversation.rejected == false
             ? (conversation.type = "accepted")
             : (conversation.type = "request");
-          setSideBarConversationItems([
-            ...sideBarConversationItems,
-            conversation,
-          ]);
+          setSideBarConversationItems((prev) => [...prev, conversation]);
         });
       });
 
-      conn.on("ReceiveIndividualMessage", (sender: string, message: string) => {
-        console.log(sender, message);
-      });
+      conn.on("ReceiveMessage", (message: ChatMessage) => {
+        const conversation = sideBarConversationItemsRef.current.find(item => item.id === message.chatRequestId);
+        if(conversation){
+          conversation.messages.push(message);
+          const ListWithRemovedPastItem = sideBarConversationItemsRef.current.filter(
+            (item) => item.id !== conversation.id
+          );
+          setSideBarConversationItems([...ListWithRemovedPastItem, conversation]);
+        }
+      })
 
       conn.on("ReceiveRequest", (request: ChatRequest) => {
         request.type = "request";
-        setSideBarConversationItems([...sideBarConversationItems, request]);
+        setSideBarConversationItems([...sideBarConversationItemsRef.current, request]);
+        console.log(sideBarConversationItems)
         toast.success("Nova solicitação de conversa recebida", {
           description: `De ${request.requester.nome}`,
           duration: 5000,
@@ -84,7 +101,7 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
         "ReceiveRequestResponse",
         (request: ChatItem, accepted: boolean) => {
           accepted ? (request.type = "accepted") : (request.type = "rejected");
-          const ListWithRemovedPastItem = sideBarConversationItems.filter(
+          const ListWithRemovedPastItem = sideBarConversationItemsRef.current.filter(
             (item) => item.id !== request.id
           );
           setSideBarConversationItems([...ListWithRemovedPastItem, request]);
@@ -116,11 +133,12 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
   };
 
   const addRequest = (request: ChatRequest) => {
-    setSideBarConversationItems([...sideBarConversationItems, request]);
+    setSideBarConversationItems([ ...sideBarConversationItemsRef.current ,request]);
   };
 
+
   const handleActualConversationChange = (conversationId: number) => {
-    const conversation = sideBarConversationItems.find(
+    const conversation = sideBarConversationItemsRef.current.find(
       (item) => item.id == conversationId
     );
     if (
@@ -132,6 +150,10 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     }
   };
 
+  const sendMessageToUser = (sendMessageDto: { receiverId: string, senderId: string, message: string, requestId: number}) => {
+    socketConnection?.invoke("SendMessageToUser", sendMessageDto);
+  }
+
   return (
     <ChatContext.Provider
       value={{
@@ -141,6 +163,7 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
         addRequest,
         actualConversation,
         handleActualConversationChange,
+        sendMessageToUser
       }}
     >
       {children}
