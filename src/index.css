@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -49,9 +47,29 @@
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
   }
+
+  *::-webkit-scrollbar {
+    background-color: #0000;
+    width: 4px;
+  }
+
+  /* background of the scrollbar except button or resizer */
+  *::-webkit-scrollbar-track {
+    background-color: var(--background);
+  }
+
+  /* scrollbar itself */
+  *::-webkit-scrollbar-thumb {
+    background-color: #5c5959;
+    border-radius: 16px;
+    border: 2px solid #ffffff00;
+  }
+
+  /* set button(top and bottom of the scrollbar) */
+  *::-webkit-scrollbar-button {
+    display: none;
+  }
 }
-
-
 
 @layer base {
   * {
