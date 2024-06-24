@@ -25,7 +25,7 @@ This is a chat application that allows users to exchange real-time messages with
 - [x]  Notify users of the following events: request received, sent request rejected, sent request accepted
 - [ ]  Allow users to update their profile information
 - [x]  Allow users to change their profile picture
-- [ ]  Enable users to exchange real-time messages with each other
+- [x]  Enable users to exchange real-time messages with each other
 - [ ]  Enable users to exchange files with each other
 - [ ]  Enable users to exchange audio with each other
 - [ ]  Develop a module for administrators to manage users and view chat history
@@ -87,7 +87,7 @@ Esta é uma aplicação de chat que permite aos usuários trocarem mensagens em 
 - [x]  Notificar os usuários sobre os seguintes eventos: solicitação recebida, solicitação enviada rejeitada, solicitação enviada aceita
 - [ ]  Permitir que os usuários atualizem suas informações de perfil
 - [x]  Permitir que os usuários alterem sua foto de perfil
-- [ ]  Permitir que os usuários troquem mensagens em tempo real entre si
+- [x]  Permitir que os usuários troquem mensagens em tempo real entre si
 - [ ]  Permitir que os usuários troquem arquivos entre si
 - [ ]  Permitir que os usuários troquem áudios entre si
 - [ ]  Desenvolver um módulo para administradores gerenciarem usuários e visualizarem o histórico de conversas
