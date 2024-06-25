@@ -15,6 +15,19 @@ const ChatPage = () => {
     actualConversation,
   } = useChat();
 
+  const conversationsOrdered = sideBarConversationItems.sort((a, b) => {
+    const timeStampA = new Date(a.messages.length > 0
+      ? a.messages[a.messages.length - 1].timestamp
+      : a.timestamp).getTime();
+
+
+    const timeStampB = new Date(b.messages.length > 0
+      ? b.messages[b.messages.length - 1].timestamp
+      : b.timestamp).getTime();
+
+      return timeStampB - timeStampA;
+  });
+
   const { mutate: sendRequestMutate } = useMutation({
     mutationFn: sendRequest,
     onSuccess: (requestResponse) => {
@@ -48,7 +61,7 @@ const ChatPage = () => {
           </h1>
         </div>
         <div className="flex-1 w-full flex flex-col">
-          {sideBarConversationItems && (
+          {conversationsOrdered && (
             <>
               <SendRequestButton sendRequest={sendRequestMutate} />
               {sideBarConversationItems.map((item, index) => (
