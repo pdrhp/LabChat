@@ -22,8 +22,9 @@ This is a chat application that allows users to exchange real-time messages with
 - [x]  Establish client WebSocket connection upon user authentication
 - [x]  Enable a user to request the start of a conversation with another user
 - [x]  Allow the request to be accepted or rejected
+- [x]  Allow users to see the connection status of active conversations, whether they are offline or online.
 - [x]  Notify users of the following events: request received, sent request rejected, sent request accepted
-- [ ]  Allow users to update their profile information
+- [x]  Allow users to update their profile information
 - [x]  Allow users to change their profile picture
 - [x]  Enable users to exchange real-time messages with each other
 - [ ]  Enable users to exchange files with each other
@@ -84,8 +85,9 @@ Esta é uma aplicação de chat que permite aos usuários trocarem mensagens em 
 - [x]  Estabelecer conexão WebSocket do cliente após a autenticação do usuário
 - [x]  Permitir que um usuário solicite o início de uma conversa com outro usuário
 - [x]  Permitir que a solicitação seja aceita ou rejeitada
+- [x]  Permitir que os usuários vejam o status de conexão das conversas ativas, se estão offline ou online
 - [x]  Notificar os usuários sobre os seguintes eventos: solicitação recebida, solicitação enviada rejeitada, solicitação enviada aceita
-- [ ]  Permitir que os usuários atualizem suas informações de perfil
+- [x]  Permitir que os usuários atualizem suas informações de perfil
 - [x]  Permitir que os usuários alterem sua foto de perfil
 - [x]  Permitir que os usuários troquem mensagens em tempo real entre si
 - [ ]  Permitir que os usuários troquem arquivos entre si
