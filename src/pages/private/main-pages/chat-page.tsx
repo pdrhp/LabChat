@@ -1,6 +1,6 @@
 import ChatContainer from "@/components/chat-container";
 import ConversationCard from "@/components/conversation-card";
-import ConversationRequestDialog from "@/components/conversation-request-dialog";
+import SendRequestButton from "@/components/send-request-button";
 import { useChat } from "@/context/chat-context";
 import { sendRequest } from "@/services/request.service";
 import { useMutation } from "@tanstack/react-query";
@@ -8,9 +8,14 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 
 const ChatPage = () => {
-  const {connectSignalR, addRequest, sideBarConversationItems, actualConversation} = useChat();
+  const {
+    connectSignalR,
+    addRequest,
+    sideBarConversationItems,
+    actualConversation,
+  } = useChat();
 
-  const {mutate: sendRequestMutate} = useMutation({
+  const { mutate: sendRequestMutate } = useMutation({
     mutationFn: sendRequest,
     onSuccess: (requestResponse) => {
       if (requestResponse) {
@@ -19,19 +24,19 @@ const ChatPage = () => {
         addRequest(request);
 
         toast.success("Solicitação enviada com sucesso", {
-          position: "top-right"
+          position: "top-right",
         });
       }
     },
     onError: () => {
       toast.error("Erro ao enviar solicitação", {
-        position: "top-right"
+        position: "top-right",
       });
     },
-  })
+  });
 
   useEffect(() => {
-    connectSignalR();    
+    connectSignalR();
   }, []);
 
   return (
@@ -43,28 +48,22 @@ const ChatPage = () => {
           </h1>
         </div>
         <div className="flex-1 w-full flex flex-col">
-          {sideBarConversationItems.length > 0 ? (
-            sideBarConversationItems.map((item, index) => (
-              <ConversationCard cardData={item} key={index} />
-            ))
-          ) : (
-            <div className="h-[15%] w-full flex flex-col justify-center items-center">
-              <p>Você não tem nenhuma conversa :(</p>
-              <ConversationRequestDialog sendRequest={sendRequestMutate}>
-                <p className="font-bold cursor-pointer hover:text-blue-200">
-                  + Adicionar conversa
-                </p>
-              </ConversationRequestDialog>
-            </div>
+          {sideBarConversationItems && (
+            <>
+              <SendRequestButton sendRequest={sendRequestMutate} />
+              {sideBarConversationItems.map((item, index) => (
+                <ConversationCard cardData={item} key={index} />
+              ))}
+            </>
           )}
         </div>
       </aside>
       <div className="border border-l-0 w-full rounded-r-lg bg-zinc-900 flex flex-col p-1 gap-2">
         {actualConversation ? (
-        <ChatContainer/>
-        ): (
+          <ChatContainer />
+        ) : (
           <div className="h-full"></div>
-        )}        
+        )}
       </div>
     </main>
   );

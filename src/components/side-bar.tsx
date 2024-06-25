@@ -4,8 +4,7 @@ import { Button } from "./ui/button";
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
+  TooltipTrigger
 } from "./ui/tooltip";
 
 const SideBar = () => {
@@ -13,7 +12,6 @@ const SideBar = () => {
   const navigate = useNavigate();
   
   return (
-    <TooltipProvider>
       <aside className="h-full border-r w-[9%] sm:w-[8%] md:w-[6%] lg:w-[5%] xl:w-[4%] 2xl:w-[3%] transition-all  flex flex-col items-center">
         <div className="border-b p-2">
           <Button variant={"outline"} size={"icon"} aria-label="Home">
@@ -72,7 +70,6 @@ const SideBar = () => {
           </div>
         </nav>
       </aside>
-    </TooltipProvider>
   );
 };
 
