@@ -15,18 +15,18 @@ const RequestSenderCard:React.FC<RequestSenderCardProps>  = ({requestedName, req
   const {data} = useQueryImage(requestedId)
 
   return (
-    <div className="p-1 w-full h-[10%] border grid grid-cols-[auto,0.8fr,auto] gap-2 cursor-pointer">
+    <div className="p-1 w-full border grid grid-cols-[auto,0.8fr,auto] gap-2 cursor-pointer">
       <div className="flex items-center">
         <Avatar>
           <AvatarImage src={data} />
           <AvatarFallback>{requestedNameInitials}</AvatarFallback>
         </Avatar>
       </div>
-      <div className="w-[100%] flex flex-col justify-center">
+      <div className="w-[100%] p-1 flex flex-col justify-center">
         <h2 className="text-[0.5em] sm:text-xs md:text-xs lg:text-xs xl:text-xs 2xl:text-lg ">
           {requestedName}
         </h2>
-        <div className="w-full h-[30%]">
+        <div className="w-full h-[100%]">
           <p className=" text-[0.5em] sm:text-xs md:text-xs lg:text-xs xl:text-xs 2xl:text-sm   h-full w-full max-w-[14rem] font-bold text-orange-500">
             Aguardando resposta
           </p>

@@ -37,16 +37,16 @@ const RequestReceiverCard: React.FC<RequestReceiverCardProps> = ({
 
 
   return (
-    <div className="p-1 w-full h-[10%] border grid grid-cols-[auto,0.8fr,auto] gap-2 cursor-pointer">
+    <div className="p-1 w-full border grid grid-cols-[auto,0.8fr,auto] gap-2 cursor-pointer">
       <div className="flex items-center">
         <Avatar>
           <AvatarImage src={data} />
           <AvatarFallback>{requesterNameInitials}</AvatarFallback>
         </Avatar>
       </div>
-      <div className="w-[100%] flex flex-col justify-center">
+      <div className="w-[100%] p-1 flex flex-col justify-center">
         <h2>{requesterName}</h2>
-        <div className="w-full h-[50%]">
+        <div className="w-full h-[100%]">
           <div className="w-full h-full flex gap-3">
             <Button onClick={() => manage({requestId: requestId, accepted: true})} variant="outline" className="h-full w-[40%]">
               <Check className="h-4 w-4" color="green" />

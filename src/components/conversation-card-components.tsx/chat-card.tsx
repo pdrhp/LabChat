@@ -28,16 +28,16 @@ const ChatCard: React.FC<ChatCardProps> = ({
   const lastMessageTime = lastMessage ? new Date(lastMessage.timestamp).toLocaleTimeString() : "";
 
   return (
-    <div onClick={() => handleActualConversationChange(conversationId)} className={`p-1 w-full h-[10%] border grid grid-cols-[auto,0.95fr,auto] gap-2 cursor-pointer ${actualConversation?.id === requestId && 'bg-neutral-900 border-0'}`}>
+    <div onClick={() => handleActualConversationChange(conversationId)} className={`p-1 w-full border grid grid-cols-[auto,0.95fr,auto] gap-2 cursor-pointer ${actualConversation?.id === requestId && 'bg-neutral-900 border-0'}`}>
       <div className="flex items-center">
         <Avatar>
           <AvatarImage src={data} />
           <AvatarFallback>{requestedNameInitials}</AvatarFallback>
         </Avatar>
       </div>
-      <div className="w-[100%] flex flex-col justify-center">
+      <div className="w-[100%] flex flex-col p-2 justify-center">
         <h2>{name}</h2>
-        <div className="w-full h-[30%]">
+        <div className="w-full h-[70%]">
           <p className={`h-full w-full max-w-[14rem] text-sm truncate ${lastMessage?.message ? '' : 'text-zinc-400'}`}>
             {lastMessage ? lastMessage.message : `Escreva sua primeira mensagem`}
           </p>
