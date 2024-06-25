@@ -15,18 +15,19 @@ const ChatPage = () => {
     actualConversation,
   } = useChat();
 
+  console.log(sideBarConversationItems);
+
   const conversationsOrdered = sideBarConversationItems.sort((a, b) => {
-    const timeStampA = new Date(a.messages.length > 0
+    const timeStampA = new Date((a.messages && a.messages.length > 0)
       ? a.messages[a.messages.length - 1].timestamp
       : a.timestamp).getTime();
 
-
-    const timeStampB = new Date(b.messages.length > 0
+    const timeStampB = new Date((b.messages && b.messages.length > 0)
       ? b.messages[b.messages.length - 1].timestamp
       : b.timestamp).getTime();
 
-      return timeStampB - timeStampA;
-  });
+    return timeStampB - timeStampA;
+});
 
   const { mutate: sendRequestMutate } = useMutation({
     mutationFn: sendRequest,
