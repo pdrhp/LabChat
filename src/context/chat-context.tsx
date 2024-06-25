@@ -104,6 +104,7 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
           const ListWithRemovedPastItem = sideBarConversationItemsRef.current.filter(
             (item) => item.id !== request.id
           );
+          request.messages = [];
           setSideBarConversationItems([...ListWithRemovedPastItem, request]);
           if (accepted && request.requester.id === userSession?.id) {
             toast.success("Solicitação aceita", {
