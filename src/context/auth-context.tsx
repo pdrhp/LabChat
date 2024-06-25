@@ -72,12 +72,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const logout = async () => {
-    const response = await httpPost<UserSession>("/auth/logout");
+    const response = await httpPost<UserSession>("/auth/signOut");
 
     if (response.flag) {
       setUserSession(undefined);
     }
-
     return response.data;
   };
 

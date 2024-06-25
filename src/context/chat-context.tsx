@@ -18,6 +18,7 @@ interface ChatContextType {
   actualConversation: ChatItem | null;
   handleActualConversationChange: (conversationId: number) => void;
   sendMessageToUser: (sendMessageDto: { receiverId: string, senderId: string, message: string, requestId: number}) => void;
+  disconnectSocket: () => void;
 }
 
 interface ChatProviderProps {
@@ -171,6 +172,10 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     socketConnection?.invoke("SendMessageToUser", sendMessageDto);
   }
 
+  const disconnectSocket = () => {
+    socketConnection?.stop();
+  }
+
   return (
     <ChatContext.Provider
       value={{
@@ -180,7 +185,8 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
         addRequest,
         actualConversation,
         handleActualConversationChange,
-        sendMessageToUser
+        sendMessageToUser,
+        disconnectSocket
       }}
     >
       {children}
