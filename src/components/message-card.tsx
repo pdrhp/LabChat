@@ -17,8 +17,8 @@ const MessageCard: React.FC<MessageCardProps> = ({Message}) => {
 
   return (
     <div className={`w-full flex ${isMessageFromUser ? 'justify-end' : 'justify-start'}`}>
-      <Card className="w-[30%] flex p-3 relative">
-        <div className="w-[91%]">
+      <Card className="w-[48%] 2xl:w-[35%] flex p-3 relative">
+        <div className="w-[85%] 2xl:w-[92%]">
             <p>{Message.message}</p>
         </div>
         <div className="absolute flex justify-center right-2 bottom-1">
