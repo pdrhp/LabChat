@@ -12,6 +12,7 @@ type RequestReceiverCardProps = {
   formattedTime: string;
   requestId: number;
   requesterId: string;
+  online?: boolean;
 };
 
 const RequestReceiverCard: React.FC<RequestReceiverCardProps> = ({
@@ -21,25 +22,26 @@ const RequestReceiverCard: React.FC<RequestReceiverCardProps> = ({
   formattedTime,
   requestId,
   requesterId,
+  online,
 }) => {
+  const { data } = useQueryImage(requesterId);
 
-    const {data} = useQueryImage(requesterId);
-        
-    const {mutate: manage} = useMutation({
-      mutationFn: manageRequest,
-      onSuccess: () => {
-        console.log("Request managed successfully");
-      },
-      onError: () => {
-        console.log("Error managing request");
-      },
-    })
-
+  const { mutate: manage } = useMutation({
+    mutationFn: manageRequest,
+    onSuccess: () => {
+      console.log("Request managed successfully");
+    },
+    onError: () => {
+      console.log("Error managing request");
+    },
+  });
 
   return (
     <div className="p-1 w-full border grid grid-cols-[auto,0.8fr,auto] gap-2 cursor-pointer">
       <div className="flex items-center">
-        <Avatar>
+        <Avatar
+          className={`border ${online ? "border-green-500" : "border-red-500"}`}
+        >
           <AvatarImage src={data} />
           <AvatarFallback>{requesterNameInitials}</AvatarFallback>
         </Avatar>
@@ -48,10 +50,18 @@ const RequestReceiverCard: React.FC<RequestReceiverCardProps> = ({
         <h2>{requesterName}</h2>
         <div className="w-full h-[100%]">
           <div className="w-full h-full flex gap-3">
-            <Button onClick={() => manage({requestId: requestId, accepted: true})} variant="outline" className="h-full w-[40%]">
+            <Button
+              onClick={() => manage({ requestId: requestId, accepted: true })}
+              variant="outline"
+              className="h-full w-[40%]"
+            >
               <Check className="h-4 w-4" color="green" />
             </Button>
-            <Button onClick={() => manage({requestId: requestId, accepted: false})} variant="outline" className="h-full w-[40%]">
+            <Button
+              onClick={() => manage({ requestId: requestId, accepted: false })}
+              variant="outline"
+              className="h-full w-[40%]"
+            >
               <X className="h-4 w-4" color="red" />
             </Button>
           </div>

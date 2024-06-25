@@ -8,16 +8,17 @@ type RequestSenderCardProps = {
     formattedDate: string;
     formattedTime: string;
     requestedId: string;
+    online?: boolean;
 }
 
-const RequestSenderCard:React.FC<RequestSenderCardProps>  = ({requestedName, requestedNameInitials, formattedDate, formattedTime, requestedId}) => {
+const RequestSenderCard:React.FC<RequestSenderCardProps>  = ({requestedName, requestedNameInitials, formattedDate, formattedTime, requestedId, online}) => {
 
   const {data} = useQueryImage(requestedId)
 
   return (
     <div className="p-1 w-full border grid grid-cols-[auto,0.8fr,auto] gap-2 cursor-pointer">
       <div className="flex items-center">
-        <Avatar>
+        <Avatar className={`border ${online ? 'border-green-500' : 'border-red-500'}`}>
           <AvatarImage src={data} />
           <AvatarFallback>{requestedNameInitials}</AvatarFallback>
         </Avatar>

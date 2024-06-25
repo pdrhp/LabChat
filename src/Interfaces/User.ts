@@ -3,6 +3,7 @@ interface User {
     email: string;
     id: string;
     userName: string;
+    online: boolean;
 }
 
 export default User;

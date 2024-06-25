@@ -67,6 +67,7 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
 
       // Listener pra receber os requests e conversas ativas ao se conectar
       conn.on("ReceiveActiveConversations", (conversations: ChatItem[]) => {
+        console.log(conversations);
         conversations.forEach((conversation) => {
           conversation.accepted == true && conversation.rejected == false
             ? (conversation.type = "accepted")
@@ -74,6 +75,19 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
           setSideBarConversationItems((prev) => [...prev, conversation]);
         });
       });
+
+      conn.on("ReceiveConnectionAlert", (userId: string, online: boolean) => {
+        console.log(userId, online);
+        const conversation = sideBarConversationItemsRef.current.find(c => c.requested.id === userId || c.requester.id === userId);
+        console.log(conversation)
+        if(conversation){
+          conversation.requested.id === userId ? conversation.requested.online = online : conversation.requester.online = online;
+          const ListWithRemovedPastItem = sideBarConversationItemsRef.current.filter(
+            (item) => item.id !== conversation.id
+          );
+          setSideBarConversationItems([...ListWithRemovedPastItem, conversation]);
+        }
+      })
 
       conn.on("ReceiveMessage", (message: ChatMessage) => {
         const conversation = sideBarConversationItemsRef.current.find(item => item.id === message.chatRequestId);
@@ -87,6 +101,7 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
       })
 
       conn.on("ReceiveRequest", (request: ChatRequest) => {
+        console.log(request);
         request.type = "request";
         setSideBarConversationItems([...sideBarConversationItemsRef.current, request]);
         console.log(sideBarConversationItems)
@@ -100,6 +115,7 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
       conn.on(
         "ReceiveRequestResponse",
         (request: ChatItem, accepted: boolean) => {
+          console.log(request);
           accepted ? (request.type = "accepted") : (request.type = "rejected");
           const ListWithRemovedPastItem = sideBarConversationItemsRef.current.filter(
             (item) => item.id !== request.id
