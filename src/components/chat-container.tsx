@@ -11,7 +11,7 @@ const ChatContainer = () => {
 
   const lastMessageEndRef = useRef<HTMLDivElement>(null);
 
-  const lastMessage = actualConversation?.messages[actualConversation?.messages.length - 1];
+  const lastMessage = actualConversation?.messages && actualConversation?.messages[actualConversation?.messages.length - 1];
 
   useEffect(() => {
     lastMessageEndRef.current?.scrollIntoView({ behavior: "smooth" });
