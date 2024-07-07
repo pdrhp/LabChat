@@ -35,19 +35,29 @@ This is a chat application that allows users to exchange real-time messages with
 ### Prerequisites
 - Node.js (14^)
 - NPM
-- Backend and an instance of SQL Server if you want to test the application in full functionality (https://github.com/pdrhp/LabChatService)
+- Docker if you want to run the project on a container (https://docs.docker.com/desktop/install/windows-install/) (https://docs.docker.com/desktop/install/linux-install/) (https://docs.docker.com/desktop/install/mac-install/)
 
 
-### Installation
-#### Clone the repository
+
+### Installation and How to Run
+#### Clone the Repository
 ```git
 git clone https://github.com/pdrhp/LabChat
 ```
 
-#### Navigate to the project folder
+#### Navigate to the Project Folder
 ```bash
 cd LabChat
 ```
+### With docker
+##### Assuming that you already have Docker installed*
+
+#### Run the development Docker Compose in the project
+```bash
+docker-compose -f docker-compose.dev.yml up --build
+```
+
+### Local development
 
 #### Install dependencies
 ```bash
@@ -58,7 +68,6 @@ npm install
 ```bash
 npm run dev
 ```
-
 
 
 ## Versão em Português
@@ -98,7 +107,7 @@ Esta é uma aplicação de chat que permite aos usuários trocarem mensagens em 
 ### Pré-requisitos
 - Node.js (14^)
 - NPM
-- Backend e uma instancia do SQL SERVER caso queira testar a aplicação em pleno funcionamento (https://github.com/pdrhp/LabChatService)
+- Docker se você quiser rodar o projeto em um container (https://docs.docker.com/desktop/install/windows-install/) (https://docs.docker.com/desktop/install/linux-install/) (https://docs.docker.com/desktop/install/mac-install/)
 
 
 ### Instalação
@@ -112,12 +121,22 @@ git clone https://github.com/pdrhp/LabChat
 cd LabChat
 ```
 
-#### Instale as dependências
+### With docker
+##### Assumindo que você já tenha o Docker instalado*
+
+#### Rode o Docker Compose de desenvolvimento no projeto
+```bash
+docker-compose -f docker-compose.dev.yml up --build
+```
+
+### Desenvolvimento Local
+
+#### Instale as Dependências
 ```bash
 npm install
 ```
 
-### Rode a aplicação
+### Rode a Aplicação
 ```bash
 npm run dev
 ```
