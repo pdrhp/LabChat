@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  labchat:	
+    image: labchat:latest	
+    deploy:
+      restart_policy:
+        condition: "any"
+        delay: "0"
+        max_attempts: 3
+        window: "30s"	
+    ports: 	
+      - "3000:80"	
+    networks:	
+      - npm_public		
+    
+
+networks:
+  npm_public:
+    external: true 
+      
