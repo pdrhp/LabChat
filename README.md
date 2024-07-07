@@ -35,7 +35,7 @@ This is a chat application that allows users to exchange real-time messages with
 ### Prerequisites
 - Node.js (14^)
 - NPM
-- Backend and an instance of SQL Server if you want to test the application in full functionality (https://github.com/pdrhp/PontoFacilWebService)
+- Backend and an instance of SQL Server if you want to test the application in full functionality (https://github.com/pdrhp/LabChatService)
 
 
 ### Installation
@@ -98,7 +98,7 @@ Esta é uma aplicação de chat que permite aos usuários trocarem mensagens em 
 ### Pré-requisitos
 - Node.js (14^)
 - NPM
-- Backend e uma instancia do SQL SERVER caso queira testar a aplicação em pleno funcionamento (https://github.com/pdrhp/PontoFacilWebService)
+- Backend e uma instancia do SQL SERVER caso queira testar a aplicação em pleno funcionamento (https://github.com/pdrhp/LabChatService)
 
 
 ### Instalação
