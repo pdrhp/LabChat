@@ -9,7 +9,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import DotBounceIcon from "./dot-bounce-icon";
 
 type MessageInputProps = {
   sendMessage: (message: string) => void;
@@ -17,6 +18,35 @@ type MessageInputProps = {
 
 const MessageInput: React.FC<MessageInputProps> = ({sendMessage}) => {
   const [messageInput, setMessage] = useState("");
+  const [recording, setRecording] = useState(true);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+
+
+  const startRecording = () => {
+    navigator.mediaDevices.getUserMedia({ audio: true}).then(stream => {
+      mediaRecorderRef.current = new MediaRecorder(stream);
+      mediaRecorderRef.current.ondataavailable = e => {
+        audioChunksRef.current.push(e.data);
+      };
+      mediaRecorderRef.current.onstop = () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: "audio/wav"});
+        const audioURL = URL.createObjectURL(audioBlob);
+        audioChunksRef.current = [];
+      };
+      mediaRecorderRef.current.start();
+      setRecording(true);
+    }).catch(err => {
+      console.error("Erro acessando o microfone" ,err);
+    })
+  };
+
+
+  const stopRecording = () => {
+    mediaRecorderRef.current?.stop();
+    setRecording(false);
+  }
+  
   
   const handleSendMessage = (message: string) => {
     sendMessage(message);
@@ -51,21 +81,19 @@ const MessageInput: React.FC<MessageInputProps> = ({sendMessage}) => {
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon">
                 <Paperclip className="size-4" />
-                <span className="sr-only">Enviar arquivo</span>
               </Button>
             </TooltipTrigger>
             <TooltipContent side="top">Enviar arquivo</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Mic className="size-4" />
-                <span className="sr-only">Enviar arquivo</span>
+              <Button variant="ghost" size="icon" className={`transition-all bg-red-500`}>
+                {recording ? <DotBounceIcon /> : <Mic className="size-4" />}
               </Button>
             </TooltipTrigger>
             <TooltipContent side="top">Usar microfone</TooltipContent>
           </Tooltip>
-          <Button type="submit" size="sm" className="ml-auto gap-1.5">
+          <Button type="submit" size="sm" className={`ml-auto gap-1.5`}>
             Enviar mensagem
             <CornerDownLeft className="size-3.5" />
           </Button>
