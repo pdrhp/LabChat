@@ -46,7 +46,7 @@ const LoginForm = () => {
 
 
   const onSubmit = async (data: z.infer<typeof loginFormSchema>) => {
-    await login(data);
+    await login({ email: data.email, password: data.password});
   };
 
   return (
