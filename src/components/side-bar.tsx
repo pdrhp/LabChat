@@ -13,14 +13,13 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 const SideBar = () => {
   const navigate = useNavigate();
-  const {logout} = useAuth();
-  const {disconnectSocket} = useChat();
-
+  const { logout, userSession } = useAuth();
+  const { disconnectSocket } = useChat();
 
   const handleLogOut = () => {
     logout();
     disconnectSocket();
-  }
+  };
 
   return (
     <aside className="h-full border-r w-[9%] sm:w-[8%] md:w-[6%] lg:w-[5%] xl:w-[4%] 2xl:w-[3%] transition-all  flex flex-col items-center">
@@ -47,21 +46,23 @@ const SideBar = () => {
               Chat
             </TooltipContent>
           </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant={"outline"}
-                className="rounded-lg"
-                size={"icon"}
-                aria-label="Chat"
-              >
-                <ShieldEllipsis className="size-5" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="right" sideOffset={5}>
-              Godmode
-            </TooltipContent>
-          </Tooltip>
+          {userSession.role.$values.includes("Admin") && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className="rounded-lg"
+                  size={"icon"}
+                  aria-label="Chat"
+                >
+                  <ShieldEllipsis className="size-5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" sideOffset={5}>
+                Godmode
+              </TooltipContent>
+            </Tooltip>
+          )}
         </div>
         <div className="flex flex-col gap-2">
           <Tooltip>

@@ -15,6 +15,7 @@ const ProfilePage = () => {
   const [imageChanged, setImageChanged] = useState<boolean>(false);
 
   const { userSession, setProfilePicture } = useAuth();
+  console.log(userSession);
   const [profilePhoto, setProfilePhoto] = useState<string | undefined>(userSession?.profilePicture);
 
   const { mutate: updatePhoto, isPending } = useMutation({

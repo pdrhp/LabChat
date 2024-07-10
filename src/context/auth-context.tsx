@@ -12,7 +12,7 @@ import {
 interface AuthContextType {
   userSession: UserSession | undefined;
   login: (userData: {
-    email: string;
+    username: string;
     password: string;
   }) => Promise<UserSession>;
   logout: () => Promise<UserSession>;
@@ -61,7 +61,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     });
   }
 
-  const login = async (userData: { email: string; password: string }) => {
+  const login = async (userData: { username: string; password: string }) => {
     const response = await httpPost<UserSession>("/auth/signin", userData);
 
     if (response.flag) {
