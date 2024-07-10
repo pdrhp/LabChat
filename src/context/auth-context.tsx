@@ -1,20 +1,36 @@
 import { UserSession } from "@/Interfaces/user-session";
-import { httpGet, httpPost } from "@/api/Client";
+import { httpGet, httpPost, Response } from "@/api/Client";
 import { getProfilePictureById } from "@/services/user.service";
 import {
-  ReactNode,
   createContext,
+  ReactNode,
   useContext,
   useEffect,
   useState,
 } from "react";
 
+type userRegisterData = {
+  Nome: string;
+  Username: string;
+  Password: string;
+  ConfirmPassword: string;
+};
+
 interface AuthContextType {
   userSession: UserSession | undefined;
+  authorizingSession: boolean;
   login: (userData: {
-    email: string;
+    username: string;
     password: string;
   }) => Promise<UserSession>;
+  register: (userData: userRegisterData) => Promise<
+    Response<{
+      Nome: string;
+      Id: string;
+      UserName: string;
+      online: boolean;  
+    }>
+  >;
   logout: () => Promise<UserSession>;
   setProfilePicture: (profilePicture: string) => void;
 }
@@ -27,27 +43,34 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [userSession, setUserSession] = useState<UserSession | undefined>();
+  const [authorizingSession, setAuthorizingSession] = useState<boolean>(true);
 
   useEffect(() => {
-    httpGet<UserSession>("auth/verifySession").then((response) => {
-      if (response.flag) {
-        setUserSession(response.data);
-        getProfilePictureById(response.data.id).then((response) => {
-          setUserSession((prev) => {
-            if (prev) {
-              return {
-                ...prev,
-                profilePicture: response,
-              };
-            }
-            return prev;
+    setAuthorizingSession(true);
+    httpGet<UserSession>("auth/verifySession")
+      .then((response) => {
+        if (response.flag) {
+          setUserSession(response.data);
+          getProfilePictureById(response.data.id).then((response) => {
+            setUserSession((prev) => {
+              if (prev) {
+                return {
+                  ...prev,
+                  profilePicture: response,
+                };
+              }
+              return prev;
+            });
           });
-        })
-      }
-    });
-
+        }
+        setTimeout(() => {
+          setAuthorizingSession(false);
+        }, 600);
+      })
+      .catch(() => {
+        setAuthorizingSession(false);
+      });
   }, []);
-
 
   const setProfilePicture = (profilePicture: string) => {
     setUserSession((prev) => {
@@ -59,9 +82,22 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
       return prev;
     });
-  }
+  };
 
-  const login = async (userData: { email: string; password: string }) => {
+  const register = async (userData: userRegisterData) => {
+    const response = await httpPost<
+      Response<{
+        Nome: string;
+        Id: string;
+        UserName: string;
+        online: boolean;
+      }>
+    >("/auth/signup", userData);
+
+    return response.data;
+  };
+
+  const login = async (userData: { username: string; password: string }) => {
     const response = await httpPost<UserSession>("/auth/signin", userData);
 
     if (response.flag) {
@@ -81,7 +117,16 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ userSession, login, logout, setProfilePicture }}>
+    <AuthContext.Provider
+      value={{
+        userSession,
+        authorizingSession,
+        login,
+        register,
+        logout,
+        setProfilePicture,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

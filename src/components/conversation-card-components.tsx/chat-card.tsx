@@ -29,6 +29,8 @@ const ChatCard: React.FC<ChatCardProps> = ({
   const lastMessageDate = lastMessage ? new Date(lastMessage.timestamp).toLocaleDateString() : "";
   const lastMessageTime = lastMessage ? new Date(lastMessage.timestamp).toLocaleTimeString() : "";
 
+  console.log(data)
+
   return (
     <div onClick={() => handleActualConversationChange(conversationId)} className={`p-1 w-full border grid grid-cols-[auto,0.95fr,auto] gap-2 cursor-pointer ${actualConversation?.id === requestId && 'bg-neutral-900 border-0'}`}>
       <div className="flex items-center">

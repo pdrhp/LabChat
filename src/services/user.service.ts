@@ -12,17 +12,13 @@ export const updateProfilePicture = async ({userId, file}: {userId: string, file
         }
     })
 
-    const url = URL.createObjectURL(new Blob([response.data]))
-
-    return url;
+    
+    console.log(response);
+    
+    return response.data.data;
 }
 
 export const getProfilePictureById = async (userId: string) => {
-    const response = await httpClient.get(`/user/${userId}/profilePicture`, {
-        responseType: 'blob'
-    })
-
-    const url = URL.createObjectURL(new Blob([response.data]))
-
-    return url;
+    const response = await httpClient.get(`/user/${userId}/profilePicture`);
+    return response.data.data;
 }

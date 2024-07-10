@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 
 
-interface Response<T> {
+export interface Response<T> {
     flag: boolean;
     statusCode: number;
     message: string;

@@ -1,8 +1,10 @@
 import { useAuth } from "@/context/auth-context";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "./ui/button";
 import {
@@ -24,29 +26,46 @@ import {
 import { Input } from "./ui/input";
 
 const loginFormSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(5),
+  username: z.string({ required_error: "O nome de usuário é obrigatório"}).nonempty("O nome de usuário é obrigatório"),
+  password: z.string({ required_error: "A senha é obrigatória"}).min(5, "A senha deve ter no mínimo 5 caracteres"),
 });
 
-
 const LoginForm = () => {
-  const form = useForm<z.infer<typeof loginFormSchema>>({
-    resolver: zodResolver(loginFormSchema),
-  });
 
-  const {login, userSession} = useAuth();
+    const form = useForm<z.infer<typeof loginFormSchema>>({
+        resolver: zodResolver(loginFormSchema),
+      });
 
-  const navigate = useNavigate();
+  const {login} = useAuth();
 
-  useEffect(() => {
-    if (userSession) {
-      navigate("/chat");
+  const {mutate: mutateLogin, isPending} = useMutation({
+    mutationFn: login,
+    onError: (error: AxiosError) => {
+      const serviceError = error.response.data as {flag: boolean, message: string, statusCode: number};
+      console.log(serviceError);
+      toast.error('Erro ao se autenticar', {
+        description: serviceError.message,
+        style: {
+          backgroundColor: '#aa1b1b',
+          color: '#fff',
+        }
+      })
+    },
+    onSuccess: () => {
+      toast.success('Autenticado com sucesso', {
+        style: {
+          backgroundColor: '#249E24',
+          color: '#fff',
+        }
+      })
+      
     }
-  }, [navigate, userSession])
+  })
+
 
 
   const onSubmit = async (data: z.infer<typeof loginFormSchema>) => {
-    await login({ email: data.email, password: data.password});
+    await mutateLogin({ username: data.username, password: data.password });
   };
 
   return (
@@ -63,12 +82,12 @@ const LoginForm = () => {
             <div className="grid gap-2">
               <FormField
                 control={form.control}
-                name="email"
+                name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Nome de usuário</FormLabel>
                     <FormControl>
-                      <Input placeholder="m@exemplo.com" {...field} />
+                      <Input placeholder="fulaninho123" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -92,7 +111,9 @@ const LoginForm = () => {
             </div>
           </CardContent>
           <CardFooter>
-            <Button className="w-full">Entrar</Button>
+            <Button className="w-full">
+               {isPending ? <Loader2 className=" animate-spin h-4 w-4"/> : 'Entrar'}
+            </Button>
           </CardFooter>
         </form>
       </Form>

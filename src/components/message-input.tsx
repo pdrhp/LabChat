@@ -18,7 +18,7 @@ type MessageInputProps = {
 
 const MessageInput: React.FC<MessageInputProps> = ({sendMessage}) => {
   const [messageInput, setMessage] = useState("");
-  const [recording, setRecording] = useState(true);
+  const [recording, setRecording] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
 
@@ -79,7 +79,7 @@ const MessageInput: React.FC<MessageInputProps> = ({sendMessage}) => {
         <div className="flex flex-1 items-end p-3 pt-0">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button disabled variant="ghost" size="icon">
                 <Paperclip className="size-4" />
               </Button>
             </TooltipTrigger>
@@ -87,7 +87,7 @@ const MessageInput: React.FC<MessageInputProps> = ({sendMessage}) => {
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" className={`transition-all bg-red-500`}>
+              <Button disabled variant="ghost" size="icon" className={`transition-all ${recording && 'bg-red-500'}`}>
                 {recording ? <DotBounceIcon /> : <Mic className="size-4" />}
               </Button>
             </TooltipTrigger>
