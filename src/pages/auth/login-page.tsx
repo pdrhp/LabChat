@@ -28,7 +28,7 @@ const LoginPage = () => {
   return (
     <div className="h-full w-full flex flex-col justify-center items-center">
         <AuthenticationTab/>
-        <p>Versão {appVersion}</p>
+        <p className="text-zinc-500">{appVersion}</p>
     </div>
   )
 }
