@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
 
+  const appVersion = import.meta.env.VITE_APP_VERSION;
+
   const {authorizingSession, userSession} = useAuth();
 
   const navigate = useNavigate();
@@ -24,8 +26,9 @@ const LoginPage = () => {
   )
 
   return (
-    <div className="h-full w-full flex justify-center items-center">
+    <div className="h-full w-full flex flex-col justify-center items-center">
         <AuthenticationTab/>
+        <p>Versão {appVersion}</p>
     </div>
   )
 }
