@@ -1,4 +1,4 @@
-import { httpClient } from "@/api/Client"
+import { httpClient, httpGet } from "@/api/Client"
 
 
 export const updateProfilePicture = async ({userId, file}: {userId: string, file: File}) => {
@@ -21,4 +21,10 @@ export const updateProfilePicture = async ({userId, file}: {userId: string, file
 export const getProfilePictureById = async (userId: string) => {
     const response = await httpClient.get(`/user/${userId}/profilePicture`);
     return response.data.data;
+}
+
+export const getAllUsers = async () => {
+    const response = await httpGet<{nome: string, id: string, userName: string, online: boolean}[]>('/user');
+
+    return response.data;
 }
