@@ -1,9 +1,9 @@
 import ChatRequest from "@/Interfaces/chat-request"
 import { httpPost } from "@/api/Client"
 
-export const sendRequest = async (email: string) => {
+export const sendRequest = async (username: string) => {
     try {
-        const response = await httpPost<ChatRequest>('/chat/sendRequest', {email})
+        const response = await httpPost<ChatRequest>('/chat/sendRequest', {username})
         return response
     }
     catch (error) {

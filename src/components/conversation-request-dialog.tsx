@@ -9,51 +9,55 @@ import { Label } from "./ui/label";
 
 
 type ConversationRequestDialogProps = {
-    children: React.ReactNode;
-    sendRequest: (email: string) => void;
+    children?: React.ReactNode;
+    sendRequest: (username: string) => void;
+    externalOpen?: boolean;
+    onOpenChange?: (open: boolean) => void;
 }
 
-const emailSchema = z.string().email();
+const usernameSchema = z.string().min(5);
 
-const ConversationRequestDialog: React.FC<ConversationRequestDialogProps> = ({children, sendRequest}) => {
+const ConversationRequestDialog: React.FC<ConversationRequestDialogProps> = ({children, sendRequest, externalOpen, onOpenChange}) => {
 
+  console.log("externalOpen", externalOpen);
 
 
     const {userSession} = useAuth();
-    const [email, setEmail] = useState<string>("");
-    const [emailError, setEmailError] = useState<boolean>(false);
+    const [username, setUsername] = useState<string>("");
+    const [validationError, setValidationError] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
 
-    const validateEmail = (email: string) => {
-        const result = emailSchema.safeParse(email);
+    const validateEmail = (username: string) => {
+        const result = usernameSchema.safeParse(username);
 
         if (result.success){
-            setEmailError(false);
+            setValidationError(false);
         } else {
-            setEmailError(true);
+            setValidationError(true);
         }
     };
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
+        setUsername(e.target.value);
         validateEmail(e.target.value);
     }
 
     const handleSendRequest = () => {
-      if(emailError) {
-        toast.error("E-mail inválido");
+      if(validationError) {
+        toast.error("Usuário invalido, deve ter no minimo 5 caracteres");
+        return;
       }
 
-      if(email === userSession?.email){
+      if(username === userSession?.username){
         toast.error("Você não pode iniciar uma conversa com você mesmo");
         return;
       }
 
-      sendRequest(email);
+      sendRequest(username);
     }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={externalOpen ? externalOpen : open} onOpenChange={externalOpen ? onOpenChange : setOpen}>
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
@@ -67,9 +71,9 @@ const ConversationRequestDialog: React.FC<ConversationRequestDialogProps> = ({ch
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="email" className="text-right">
-              E-mail
+              Username
             </Label>
-            <Input id="email" value={email} onChange={(e) => handleEmailChange(e)} className={`col-span-3 ${emailError ? 'border-red-500' : ''}`} />
+            <Input id="email" value={username} onChange={(e) => handleEmailChange(e)} className={`col-span-3 ${validationError ? 'border-red-500' : ''}`} />
           </div>
         </div>
         <DialogFooter>

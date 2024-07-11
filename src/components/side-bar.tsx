@@ -21,6 +21,8 @@ const SideBar = () => {
     disconnectSocket();
   };
 
+  console.log(userSession);
+
   return (
     <aside className="h-full border-r w-[9%] sm:w-[8%] md:w-[6%] lg:w-[5%] xl:w-[4%] 2xl:w-[3%] transition-all  flex flex-col items-center">
       <div className="border-b p-2">
@@ -46,7 +48,7 @@ const SideBar = () => {
               Chat
             </TooltipContent>
           </Tooltip>
-          {userSession.role.$values.includes("Admin") && (
+          {userSession.role.includes("Admin") && (
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button

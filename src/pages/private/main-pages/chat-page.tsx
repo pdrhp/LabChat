@@ -1,13 +1,22 @@
+import AddChatActionDropdown from "@/components/add-chat-action-dropdown";
 import ChatContainer from "@/components/chat-container";
 import ConversationCard from "@/components/conversation-card";
-import SendRequestButton from "@/components/send-request-button";
+import ConversationRequestDialog from "@/components/conversation-request-dialog";
+import SearchUsersDialog from "@/components/search-users-dialog";
+import { Button } from "@/components/ui/button";
 import { useChat } from "@/context/chat-context";
 import { sendRequest } from "@/services/request.service";
 import { useMutation } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { Plus } from "lucide-react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const ChatPage = () => {
+  const [conversationRequestDialogOpen, setConversationRequestDialogOpen] =
+    useState(false);
+  const [dropdownMenuContextOpen, setDropdownMenuContextOpen] = useState<boolean>(false);
+  const [searchUserDialogOpen, setSearchUserDialogOpen] = useState<boolean>(false);
+
   const {
     connectSignalR,
     addRequest,
@@ -15,19 +24,21 @@ const ChatPage = () => {
     actualConversation,
   } = useChat();
 
-  console.log(sideBarConversationItems);
-
   const conversationsOrdered = sideBarConversationItems.sort((a, b) => {
-    const timeStampA = new Date((a.messages && a.messages.length > 0)
-      ? a.messages[a.messages.length - 1].timestamp
-      : a.timestamp).getTime();
+    const timeStampA = new Date(
+      a.messages && a.messages.length > 0
+        ? a.messages[a.messages.length - 1].timestamp
+        : a.timestamp
+    ).getTime();
 
-    const timeStampB = new Date((b.messages && b.messages.length > 0)
-      ? b.messages[b.messages.length - 1].timestamp
-      : b.timestamp).getTime();
+    const timeStampB = new Date(
+      b.messages && b.messages.length > 0
+        ? b.messages[b.messages.length - 1].timestamp
+        : b.timestamp
+    ).getTime();
 
     return timeStampB - timeStampA;
-});
+  });
 
   const { mutate: sendRequestMutate } = useMutation({
     mutationFn: sendRequest,
@@ -49,6 +60,7 @@ const ChatPage = () => {
     },
   });
 
+
   useEffect(() => {
     connectSignalR();
   }, []);
@@ -64,7 +76,16 @@ const ChatPage = () => {
         <div className="flex-1 w-full flex flex-col">
           {conversationsOrdered && (
             <>
-              <SendRequestButton sendRequest={sendRequestMutate} />
+              <AddChatActionDropdown searchUserAction={() => setSearchUserDialogOpen(true)} sendRequestAction={() => setConversationRequestDialogOpen(true)} open={dropdownMenuContextOpen} setOpen={setDropdownMenuContextOpen}>
+                <Button
+                  variant={"outline"}
+                  className="w-full rounded-none"
+                  size={"icon"}
+                  aria-label="Chat"
+                >
+                  <Plus className="size-5 fill-foreground" />
+                </Button>
+              </AddChatActionDropdown>
               {sideBarConversationItems.map((item, index) => (
                 <ConversationCard cardData={item} key={index} />
               ))}
@@ -79,6 +100,8 @@ const ChatPage = () => {
           <div className="h-full"></div>
         )}
       </div>
+      <ConversationRequestDialog externalOpen={conversationRequestDialogOpen && !dropdownMenuContextOpen} onOpenChange={setConversationRequestDialogOpen} sendRequest={sendRequestMutate} />
+      <SearchUsersDialog open={searchUserDialogOpen && !dropdownMenuContextOpen} setOpen={setSearchUserDialogOpen}/>
     </main>
   );
 };
