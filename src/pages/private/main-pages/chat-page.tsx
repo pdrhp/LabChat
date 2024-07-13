@@ -73,7 +73,7 @@ const ChatPage = () => {
             Chat
           </h1>
         </div>
-        <div className="flex-1 w-full flex flex-col">
+        <div className="flex-1 w-full 2xl:min-w-[18.9rem] max-w-[19rem] flex flex-col">
           {conversationsOrdered && (
             <>
               <AddChatActionDropdown searchUserAction={() => setSearchUserDialogOpen(true)} sendRequestAction={() => setConversationRequestDialogOpen(true)} open={dropdownMenuContextOpen} setOpen={setDropdownMenuContextOpen}>

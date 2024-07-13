@@ -24,7 +24,7 @@ const SideBar = () => {
   console.log(userSession);
 
   return (
-    <aside className="h-full border-r w-[9%] sm:w-[8%] md:w-[6%] lg:w-[5%] xl:w-[4%] 2xl:w-[3%] transition-all  flex flex-col items-center">
+    <aside className="h-full border-r w-[9%] cellphone-sm:w-[4%] sm:w-[8%] md:w-[6%] lg:w-[5%] xl:w-[4%] 2xl:w-[3%] transition-all  flex flex-col items-center">
       <div className="border-b p-2">
         <Button variant={"outline"} size={"icon"} aria-label="Home">
           <Laugh className="size-5" />
@@ -37,11 +37,11 @@ const SideBar = () => {
               <Button
                 onClick={() => navigate("/chat")}
                 variant={"outline"}
+                size="icon"
                 className="rounded-lg"
-                size={"icon"}
                 aria-label="Chat"
               >
-                <MessageSquare className="size-5 fill-foreground" />
+                <MessageSquare className="lg:size-5 size-5 fill-foreground" />
               </Button>
             </TooltipTrigger>
             <TooltipContent side="right" sideOffset={5}>

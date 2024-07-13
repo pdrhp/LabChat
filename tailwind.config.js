@@ -2,10 +2,10 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {
@@ -14,8 +14,21 @@ module.exports = {
       padding: "2rem",
       screens: {
         "2xl": "1400px",
-        "3xl": "1600px"
       },
+    },
+    screens: {
+      'cellphone-sm': "320px",
+      'sm': "640px",
+      // => @media (min-width: 640px) { ... }
+      'md': "768px",
+      // => @media (min-width: 768px) { ... }
+      'lg': "1024px",
+      // => @media (min-width: 1024px) { ... }
+      'xl': "1280px",
+      // => @media (min-width: 1280px) { ... }
+      '2xl': "1536px",
+      // => @media (min-width: 1536px) { ... }
+      "3xl": "1600px",
     },
     extend: {
       colors: {
@@ -67,18 +80,18 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "bounce": {
-          '0%, 20%, 50%, 80%, 100%': { transform: 'translateY(0)' },
-          '40%': { transform: 'translateY(-10px)' },
-          '60%': { transform: 'translateY(-5px)' },
-        }
+        bounce: {
+          "0%, 20%, 50%, 80%, 100%": { transform: "translateY(0)" },
+          "40%": { transform: "translateY(-10px)" },
+          "60%": { transform: "translateY(-5px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "bounce": "bounce 1s infinite",
+        bounce: "bounce 1s infinite",
       },
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};

@@ -14,12 +14,12 @@ const AuthenticationTab = () => {
 
 
   return (
-    <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col items-center" >
+    <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col items-center"  >
       <TabsList>
         <TabsTrigger value="login">Login</TabsTrigger>
         <TabsTrigger value="register">Registrar</TabsTrigger>
       </TabsList>
-      <TabsContent value="login" className="w-[30rem] flex justify-center">
+      <TabsContent value="login" className="w-[20rem] 2xl:w-[30rem] flex justify-center">
         <LoginForm/>
       </TabsContent>
       <TabsContent value="register" className="w-[30rem] flex justify-center">

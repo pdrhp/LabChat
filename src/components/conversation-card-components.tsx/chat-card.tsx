@@ -42,7 +42,7 @@ const ChatCard: React.FC<ChatCardProps> = ({
       <div className="w-[100%] flex flex-col p-2 justify-center">
         <h2>{name}</h2>
         <div className="w-full h-[70%]">
-          <p className={`h-full w-full max-w-[14rem] text-sm truncate ${lastMessage?.message ? '' : 'text-zinc-400'}`}>
+          <p className={`h-full w-full max-w-[9rem] text-sm truncate ${lastMessage?.message ? '' : 'text-zinc-400'}`}>
             {lastMessage ? lastMessage.message : `Escreva sua primeira mensagem`}
           </p>
         </div>
