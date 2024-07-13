@@ -52,6 +52,12 @@ const MessageInput: React.FC<MessageInputProps> = ({sendMessage}) => {
     sendMessage(message);
     setMessage("");
   }
+
+  const handleSendMessageClickButon = () => {
+    if (messageInput.trim() !== "") {
+      handleSendMessage(messageInput);
+    }
+  }
   
   const handlePressEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
@@ -93,7 +99,7 @@ const MessageInput: React.FC<MessageInputProps> = ({sendMessage}) => {
             </TooltipTrigger>
             <TooltipContent side="top">Usar microfone</TooltipContent>
           </Tooltip>
-          <Button type="submit" size="sm" className={`ml-auto gap-1.5`}>
+          <Button type="button" onClick={handleSendMessageClickButon} size="sm" className={`ml-auto gap-1.5`}>
             Enviar mensagem
             <CornerDownLeft className="size-3.5" />
           </Button>
